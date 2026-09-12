@@ -40,6 +40,26 @@ def create_features(data, prediction_horizon=5):
     data["Volume_Change"] = data["Volume"].pct_change()
     data["Volume_MA_5"] = data["Volume"].rolling(5).mean()
 
+    # Lagged Return Features
+    data["Return_Lag_1"] = data["Daily_Return"].shift(1)
+    data["Return_Lag_2"] = data["Daily_Return"].shift(2)
+    data["Return_Lag_3"] = data["Daily_Return"].shift(3)
+    data["Return_Lag_5"] = data["Daily_Return"].shift(5)
+
+# Historical Return Features
+    data["Return_5D"] = data["Close"].pct_change(5)
+    data["Return_10D"] = data["Close"].pct_change(10)
+    data["Return_20D"] = data["Close"].pct_change(20)
+
+# Price relative to Moving Averages
+    data["Price_MA5_Ratio"] = data["Close"] / data["MA_5"]
+    data["Price_MA20_Ratio"] = data["Close"] / data["MA_20"]
+    data["Price_MA50_Ratio"] = data["Close"] / data["MA_50"]
+
+
+
+
+
     
     delta = data["Close"].diff()
 
