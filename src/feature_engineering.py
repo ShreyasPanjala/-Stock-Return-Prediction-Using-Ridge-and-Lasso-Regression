@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 
 
-def create_features(data, prediction_horizon=5):
+def create_features(data, prediction_horizon=1):
     """
     Creates financial features and target variable.
     """
@@ -76,9 +76,7 @@ def create_features(data, prediction_horizon=5):
     
     data["Future_Close"] = data["Close"].shift(-prediction_horizon)
 
-    data["Future_Return"] = (
-        data["Future_Close"] - data["Close"]
-    ) / data["Close"]
+    data["Future_Return"] = np.log(data["Future_Close"] / data["Close"])
 
     
     data.drop(columns=["Future_Close"], inplace=True)
