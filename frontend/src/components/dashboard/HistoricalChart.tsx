@@ -12,11 +12,12 @@ import {
 
 interface HistoricalChartProps {
   data: HistoricalDataPoint[];
+  currencySymbol: string;
 }
 
 type Range = '1M' | '3M' | '6M' | 'ALL';
 
-export default function HistoricalChart({ data }: HistoricalChartProps) {
+export default function HistoricalChart({ data, currencySymbol }: HistoricalChartProps) {
   const [range, setRange] = useState<Range>('3M');
   
   const filteredData = useMemo(() => {
@@ -59,7 +60,7 @@ export default function HistoricalChart({ data }: HistoricalChartProps) {
         <div className="bg-white border border-border rounded shadow-card p-2 text-sm">
           <p className="text-neutral mb-1">{label}</p>
           <p className="text-navy font-bold">
-            ${Number(payload[0].value).toFixed(2)}
+            {currencySymbol}{Number(payload[0].value).toFixed(2)}
           </p>
         </div>
       );
@@ -112,7 +113,7 @@ export default function HistoricalChart({ data }: HistoricalChartProps) {
               fontSize={11}
               tickLine={false}
               axisLine={false}
-              tickFormatter={(value) => `$${value.toFixed(0)}`}
+              tickFormatter={(value) => `${currencySymbol}${value.toFixed(0)}`}
               width={60}
               tick={{ fill: '#8F9DAA' }}
             />

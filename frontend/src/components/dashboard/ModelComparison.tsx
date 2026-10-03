@@ -1,7 +1,7 @@
 import type { PredictionResponse } from '../../types';
 import clsx from 'clsx';
 
-export default function ModelComparison({ data }: { data: PredictionResponse }) {
+export default function ModelComparison({ data, currencySymbol }: { data: PredictionResponse, currencySymbol: string }) {
   
   const formatReturn = (val: number) => {
     const isPos = val > 0;
@@ -15,7 +15,7 @@ export default function ModelComparison({ data }: { data: PredictionResponse }) 
     const isPos = val > 0;
     const formatted = Math.abs(val).toFixed(2);
     return <span className={clsx("font-medium", isPos ? "text-positive" : val < 0 ? "text-negative" : "text-neutral")}>
-      {isPos ? `+$${formatted}` : val < 0 ? `-$${formatted}` : `$${formatted}`}
+      {isPos ? `+${currencySymbol}${formatted}` : val < 0 ? `-${currencySymbol}${formatted}` : `${currencySymbol}${formatted}`}
     </span>;
   };
 
@@ -43,7 +43,7 @@ export default function ModelComparison({ data }: { data: PredictionResponse }) 
                 Ridge (L2)
               </td>
               <td className="px-6 py-4">{formatReturn(data.ridge.predicted_return)}</td>
-              <td className="px-6 py-4 font-semibold text-navy">${data.ridge.predicted_price.toFixed(2)}</td>
+              <td className="px-6 py-4 font-semibold text-navy">{currencySymbol}{data.ridge.predicted_price.toFixed(2)}</td>
               <td className="px-6 py-4">{formatChange(data.ridge.price_change)}</td>
             </tr>
             <tr className="hover:bg-gray-50/50 transition-colors">
@@ -52,7 +52,7 @@ export default function ModelComparison({ data }: { data: PredictionResponse }) 
                 Lasso (L1)
               </td>
               <td className="px-6 py-4">{formatReturn(data.lasso.predicted_return)}</td>
-              <td className="px-6 py-4 font-semibold text-navy">${data.lasso.predicted_price.toFixed(2)}</td>
+              <td className="px-6 py-4 font-semibold text-navy">{currencySymbol}{data.lasso.predicted_price.toFixed(2)}</td>
               <td className="px-6 py-4">{formatChange(data.lasso.price_change)}</td>
             </tr>
           </tbody>

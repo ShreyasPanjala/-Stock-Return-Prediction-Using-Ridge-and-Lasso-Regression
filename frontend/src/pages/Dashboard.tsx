@@ -5,6 +5,7 @@ import PredictionCard from '../components/dashboard/PredictionCard';
 import HistoricalChart from '../components/dashboard/HistoricalChart';
 import ModelComparison from '../components/dashboard/ModelComparison';
 import { Activity } from 'lucide-react';
+import { getCurrencySymbol } from '../utils/currency';
 
 interface DashboardProps {
   data: PredictionResponse | null;
@@ -12,6 +13,8 @@ interface DashboardProps {
 }
 
 export default function Dashboard({ data, onDataUpdate }: DashboardProps) {
+  const currencySymbol = getCurrencySymbol(data?.ticker);
+
   return (
     <div className="flex flex-col min-h-screen bg-background">
       {/* Header Section */}
@@ -60,7 +63,7 @@ export default function Dashboard({ data, onDataUpdate }: DashboardProps) {
                   />
                   <SummaryCard 
                     label="CURRENT PRICE" 
-                    value={`$${data.latest_price.toFixed(2)}`} 
+                    value={`${currencySymbol}${data.latest_price.toFixed(2)}`} 
                     subtext={`Latest: ${data.latest_date}`} 
                   />
                   <SummaryCard 
@@ -81,20 +84,22 @@ export default function Dashboard({ data, onDataUpdate }: DashboardProps) {
                       title="Ridge Regression" 
                       description="L2-regularized linear model"
                       prediction={data.ridge} 
+                      currencySymbol={currencySymbol}
                     />
                     <PredictionCard 
                       title="Lasso Regression" 
                       description="L1-regularized linear model"
                       prediction={data.lasso} 
+                      currencySymbol={currencySymbol}
                     />
                   </div>
                 </div>
 
                 {/* Historical Chart */}
-                <HistoricalChart data={data.historical_data} />
+                <HistoricalChart data={data.historical_data} currencySymbol={currencySymbol} />
                 
                 {/* Model Comparison */}
-                <ModelComparison data={data} />
+                <ModelComparison data={data} currencySymbol={currencySymbol} />
                 
               </div>
             ) : (

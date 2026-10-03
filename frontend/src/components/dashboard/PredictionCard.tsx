@@ -6,9 +6,10 @@ interface PredictionCardProps {
   title: string;
   description: string;
   prediction: ModelPrediction;
+  currencySymbol: string;
 }
 
-export default function PredictionCard({ title, description, prediction }: PredictionCardProps) {
+export default function PredictionCard({ title, description, prediction, currencySymbol }: PredictionCardProps) {
   const isPositive = prediction.predicted_return > 0;
   const isNegative = prediction.predicted_return < 0;
   
@@ -21,7 +22,7 @@ export default function PredictionCard({ title, description, prediction }: Predi
   
   const formatChange = (val: number) => {
     const formatted = Math.abs(val).toFixed(2);
-    return isPositive ? `+$${formatted}` : isNegative ? `-$${formatted}` : `$${formatted}`;
+    return isPositive ? `+${currencySymbol}${formatted}` : isNegative ? `-${currencySymbol}${formatted}` : `${currencySymbol}${formatted}`;
   };
 
   return (
@@ -44,7 +45,7 @@ export default function PredictionCard({ title, description, prediction }: Predi
       <div className="grid grid-cols-2 gap-4 mt-auto border-t border-border pt-4">
         <div>
           <div className="text-xs font-semibold text-neutral uppercase tracking-wider mb-1">Implied Price</div>
-          <div className="text-xl font-semibold text-navy">${prediction.predicted_price.toFixed(2)}</div>
+          <div className="text-xl font-semibold text-navy">{currencySymbol}{prediction.predicted_price.toFixed(2)}</div>
         </div>
         <div>
           <div className="text-xs font-semibold text-neutral uppercase tracking-wider mb-1">Price Change</div>
