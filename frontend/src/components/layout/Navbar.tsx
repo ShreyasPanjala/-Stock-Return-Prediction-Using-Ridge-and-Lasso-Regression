@@ -1,4 +1,4 @@
-import { LineChart, Activity } from 'lucide-react';
+import { Activity } from 'lucide-react';
 import clsx from 'clsx';
 
 interface NavbarProps {
